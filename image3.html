@@ -309,7 +309,7 @@
           <div class="photo-container" id="photoContainer">
             <!-- 本地图片列表：请替换为你自己的图片路径和文件名 -->
             <!-- 示例：假设你的图片放在和HTML文件同目录的images文件夹下 -->
-            <div class="photo-item"><img src="img/1.jpg" alt="照片1"></div>
+       <!--      <div class="photo-item"><img src="img/1.jpg" alt="照片1"></div>
             <div class="photo-item"><img src="img/2.jpg" alt="照片2"></div>
             <div class="photo-item"><img src="img/3.jpg" alt="照片3"></div>
             <div class="photo-item"><img src="img/4.jpg" alt="照片4"></div>
@@ -326,7 +326,7 @@
             <div class="photo-item"><img src="img/15.jpg" alt="照片5"></div>
             <div class="photo-item"><img src="img/16.jpg" alt="照片4"></div>
             <div class="photo-item"><img src="img/17.jpg" alt="照片1"></div>
-       <!--      <div class="photo-item"><img src="img/18.jpg" alt="照片2"></div>
+            <div class="photo-item"><img src="img/18.jpg" alt="照片2"></div>
             <div class="photo-item"><img src="img/19.jpg" alt="照片3"></div>
             <div class="photo-item"><img src="img/20.jpg" alt="照片4"></div>
             <div class="photo-item"><img src="img/21.jpg" alt="照片1"></div>
@@ -335,13 +335,13 @@
             <div class="photo-item"><img src="img/24.jpg" alt="照片4"></div>
             <div class="photo-item"><img src="img/25.jpg" alt="照片5"></div>
             <div class="photo-item"><img src="img/26.jpg" alt="照片1"></div> -->
-            <<!-- div class="photo-item"><img src="img/27.jpg" alt="照片2"></div>
+            <!-- <div class="photo-item"><img src="img/27.jpg" alt="照片2"></div>
             <div class="photo-item"><img src="img/28.jpg" alt="照片3"></div>
             <div class="photo-item"><img src="img/29.jpg" alt="照片4"></div>
             <div class="photo-item"><img src="img/30.jpg" alt="照片4"></div>
             <div class="photo-item"><img src="img/31.jpg" alt="照片1"></div>
             <div class="photo-item"><img src="img/32.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/33.jpg" alt="照片3"></div>
+            <div class="photo-item"><img src="img/33.jpg" alt="照片3"></div> -->
             <div class="photo-item"><img src="img/34.jpg" alt="照片4"></div>
             <div class="photo-item"><img src="img/35.jpg" alt="照片5"></div>
             <div class="photo-item"><img src="img/37.jpg" alt="照片1"></div>
@@ -360,13 +360,13 @@
             <div class="photo-item"><img src="img/49.jpg" alt="照片3"></div>
             <div class="photo-item"><img src="img/50.jpg" alt="照片4"></div>
             <div class="photo-item"><img src="img/51.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/52.jpg" alt="照片2"></div> -->
+            <div class="photo-item"><img src="img/52.jpg" alt="照片2"></div>
         </div>
     </div>
 
     <!-- 炫丽文字 -->
-     <div class="text-content">因为有你一路陪伴，我才能感受到爱的幸福。</div>
-    <div class="text-content">希望未来一直有你，我想和你走到人生的终点。</div>
+     <div class="text-content">我爱你，胡目熔</div>
+    <div class="text-content">愿得一人心，白首不分离</div>
 
     <!-- 图片放大遮罩层 -->
     <div class="modal" id="modal">
@@ -375,9 +375,9 @@
     </div>
 
     <!-- 大爱心按钮 -->
-    <div class="heart-btn" id="heartBtn">
+<!--     <div class="heart-btn" id="heartBtn">
         <span class="heart-text">下一页</span>
-    </div>
+    </div> -->
      <!-- 大爱心按钮 -->
     <div class="heart-btn2" id="heartBtn2">
         <span class="heart-text">上一页</span>
@@ -403,7 +403,7 @@
         const modalImg = document.getElementById('modalImg');
         const closeBtn = document.getElementById('closeBtn');
         const photoItems = document.querySelectorAll('.photo-item');
-        const heartBtn = document.getElementById('heartBtn');
+        // const heartBtn = document.getElementById('heartBtn');
         const heartBtn2 = document.getElementById('heartBtn2');
         // 新增：音乐相关元素
         const musicPlayer = document.getElementById('backgroundMusic');
@@ -496,13 +496,13 @@
         });
 
         // 爱心按钮点击跳转逻辑
-        heartBtn.addEventListener('click', () => {
-            const nextPageUrl = 'image2.html';
-            window.location.href = nextPageUrl;
-        });
+        // heartBtn.addEventListener('click', () => {
+        //     const nextPageUrl = 'image2.html';
+        //     window.location.href = nextPageUrl;
+        // });
           // 爱心按钮点击跳转逻辑
         heartBtn2.addEventListener('click', () => {
-            const nextPageUrl = 'index.html';
+            const nextPageUrl = 'image2.html';
             window.location.href = nextPageUrl;
         });
 
