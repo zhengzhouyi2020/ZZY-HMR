@@ -391,7 +391,7 @@
     <!-- 新增：音频播放器（隐藏） -->
     <audio id="backgroundMusic" loop>
         <!-- 替换为你的MP3文件路径 -->
-        <source src="music/lovebgm.mp3" type="audio/ogg">
+        <source src="lovebgm.mp3" type="audio/ogg">
         您的浏览器不支持音频播放
     </audio>
 
@@ -424,7 +424,7 @@
         const originalWidth = originalItems.length * (300 + 20);
         let isModalOpen = false;
         // 新增：音乐播放状态
-        let isMusicPlaying = false;
+        let isMusicPlaying = true;
 
         // 自动滚动函数
         function autoScroll() {
@@ -511,6 +511,7 @@
         // 尝试自动播放音乐（兼容浏览器策略：需用户交互后播放）
         function initMusic() {
             // 监听页面点击事件，首次点击后自动播放
+            playMusic();
             document.addEventListener('click', function playMusicOnClick() {
                 if (!isMusicPlaying) {
                     playMusic();
