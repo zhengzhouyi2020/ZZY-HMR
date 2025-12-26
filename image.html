@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>郑周义♥胡目熔</title>
+    <title>郑周周义♥胡目熔</title>
     <meta name="language" content="zh-CN">
     <meta name="title" content="郑周义">
     <style>
@@ -33,7 +33,18 @@
             overflow-x: hidden;
         }
 
-        /* 照片墙容器 - 固定在屏幕中央 */
+        /* 粒子效果画布 */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100; /* 确保在背景之上，内容之下 */
+        }
+
+        /* 照片墙容器 - 固定在屏幕屏幕中央 */
         .photo-wall {
             width: 100%;
             max-width: 1400px;
@@ -47,6 +58,7 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.1);
             background-color: #fff;
             padding: 0 20px;
+            z-index: 200;
         }
 
         /* 滚动内容容器 */
@@ -141,11 +153,12 @@
             background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
-                         0 0 20px rgba(230, 100, 101, 0.5);
+            text-shadow: none;
             animation: gradientMove 8s ease infinite;
             width: 100%;
             max-width: 1400px;
+            z-index: 200;
+            position: relative;
         }
 
         @keyframes gradientMove {
@@ -271,6 +284,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+    <!-- 粒子效果画布 -->
+    <canvas id="particleCanvas"></canvas>
+
     <!-- 照片墙容器 -->
     <div class="photo-wall">
         <div class="photo-container" id="photoContainer">
@@ -279,7 +295,7 @@
     </div>
 
     <!-- 炫丽文字 -->
-    <div class="text-content">因为有你一路陪伴，我才能感受到爱的幸福。</div>
+    <div class="text-content">因为有你一路陪伴，我才能才能感受到爱的幸福。</div>
     <div class="text-content">希望未来一直有你，我想和你走到人生的终点。</div>
     <div class="text-content">我会让你看到我的改变，成为值得你托付终生的人。</div>
     <div class="text-content">我爱你，胡目熔！</div>
@@ -292,10 +308,10 @@
     </div>
 
     <!-- 爱心按钮 -->
-    <div class="heart-btn" id="heartBtn">
+ <!--    <div class="heart-btn" id="heartBtn">
         <span class="heart-text">下一页</span>
         <i class="fa fa-heart heart-icon"></i>
-    </div>
+    </div> -->
     <div class="heart-btn2" id="heartBtn2">
         <span class="heart-text">上一页</span>
         <i class="fa fa-heart heart-icon"></i>
@@ -313,6 +329,92 @@
     </audio>
 
     <script>
+        // 粒子效果实现
+        (function() {
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const particleCount = 100; // 粒子数量
+            const maxDistance = 150; // 粒子间最大连线距离
+
+            // 设置canvas尺寸
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            // 初始化粒子
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 1.5 + 0.5,
+                        speedX: (Math.random() - 0.5) * 0.5,
+                        speedY: (Math.random() - 0.5) * 0.5,
+                        color: 'rgba(196, 181, 253, 0.8)' // 浅紫色
+                    });
+                }
+            }
+
+            // 绘制粒子和连线
+            function draw() {
+                // 清空画布
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制粒子
+                particles.forEach(particle => {
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = particle.color;
+                    ctx.fill();
+                    
+                    // 更新粒子位置
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    // 边界检测
+                    if (particle.x < 0) particle.x = canvas.width;
+                    if (particle.x > canvas.width) particle.x = 0;
+                    if (particle.y < 0) particle.y = canvas.height;
+                    if (particle.y > canvas.height) particle.y = 0;
+                });
+                
+                // 绘制连线
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p1 = particles[i];
+                        const p2 = particles[j];
+                        const dx = p1.x - p2.x;
+                        const dy = p1.y - p2.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        // 当粒子距离小于最大距离时绘制连线
+                        if (distance < maxDistance) {
+                            // 连线透明度随距离增加而降低
+                            const opacity = 1 - (distance / maxDistance);
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(196, 181, 253, ${opacity * 0.5})`; // 浅紫色连线
+                            ctx.lineWidth = 0.5;
+                            ctx.moveTo(p1.x, p1.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                
+                requestAnimationFrame(draw);
+            }
+
+            // 初始化
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            initParticles();
+            draw();
+        })();
+
+        // 原有功能代码
         // 获取DOM元素
         const photoWall = document.querySelector('.photo-wall');
         const photoContainer = document.getElementById('photoContainer');
@@ -502,11 +604,11 @@
             }
         });
 
-        // 爱心按钮点击跳转逻辑
-        heartBtn.addEventListener('click', () => {
-            const nextPageUrl = 'image2.html';
-            window.location.href = nextPageUrl;
-        });
+        // // 爱心按钮点击跳转逻辑
+        // heartBtn.addEventListener('click', () => {
+        //     const nextPageUrl = 'image2.html';
+        //     window.location.href = nextPageUrl;
+        // });
         
         heartBtn2.addEventListener('click', () => {
             const nextPageUrl = 'index.html';
@@ -527,14 +629,14 @@
                     console.log('音乐自动播放成功');
                 } catch (error) {
                     console.log('自动播放失败，等待用户交互:', error);
-                    // 方案2：监听任何用户交互后播放
+                    // 方案2：监听听任何用户交互后播放
                     const playOnInteraction = () => {
                         if (!isMusicPlaying) {
                             musicPlayer.muted = false;
                             musicPlayer.play().then(() => {
                                 isMusicPlaying = true;
                                 musicIcon.textContent = '♪';
-                                musicIcon.style.color = '#ff4757';
+                                musicIconIcon.style.color = '#ff4757';
                             }).catch(err => console.log('用户交互后播放失败:', err));
                             // 移除所有监听，避免重复触发
                             document.removeEventListener('click', playOnInteraction);
