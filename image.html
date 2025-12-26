@@ -2,13 +2,17 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>郑周义♥胡目熔</title>
     <meta name="language" content="zh-CN">
     <meta name="title" content="郑周义">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* 基础图标引入 */
+        @font-face {
+            font-family: 'FontAwesome';
+            src: url('https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css');
+        }
+        
         /* 基础样式重置 */
         * {
             margin: 0;
@@ -51,6 +55,8 @@
             position: absolute;
             left: 0;
             height: 80%;
+            will-change: transform; /* 性能优化 */
+            transform: translateZ(0); /* 启用GPU加速 */
         }
 
         /* 图片样式 */
@@ -75,6 +81,8 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.4s ease;
+            /* 图片预加载 */
+            image-rendering: -webkit-optimize-contrast;
         }
 
         .photo-item:hover img {
@@ -141,15 +149,9 @@
         }
 
         @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         @supports (-webkit-text-stroke: 1px #fff) {
@@ -158,123 +160,86 @@
             }
         }
 
-         /* 新增：爱心按钮样式 */
+        /* 爱心按钮样式 - 使用FontAwesome图标 */
         .heart-btn {
-            /* 固定在右下角 */
             position: fixed;
             bottom: 40px;
             right: 40px;
-            /* 爱心形状 */
             width: 75px;
             height: 75px;
             background-color: #ff6b8b;
-            /* 核心：用border-radius制作爱心 */
-            border-radius: 50% 50% 0 50%;
-            transform: rotate(45deg);
+            border-radius: 50%;
             cursor: pointer;
-            /* 视觉效果 */
             box-shadow: 0 4px 15px rgba(255, 107, 139, 0.4);
             transition: all 0.3s ease;
-            z-index: 900; /* 低于遮罩层，高于其他内容 */
-            /* 内部居中容器 */
+            z-index: 900;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* 爱心内部装饰（小爱心） */
-        .heart-btn::before {
-            content: '';
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            border-radius: 50%;
-            transform: translate(-30px, 0);
-        }
-
-        .heart-btn::after {
-            content: '';
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            border-radius: 50%;
-            transform: translate(0, -30px);
-        }
-
-        /* 爱心悬浮效果 */
         .heart-btn:hover {
             background-color: #ff4757;
-            transform: rotate(45deg) scale(1.1);
+            transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
         }
 
-        /* 爱心按钮文字（可选） */
+        .heart-btn2 {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            width: 75px;
+            height: 75px;
+            background-color: #ff6b8b;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 139, 0.4);
+            transition: all 0.3s ease;
+            z-index: 900;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heart-btn2:hover {
+            background-color: #ff4757;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
+        }
+
+        /* 优化爱心图标样式 - 更美观的动态效果 */
+        .heart-icon {
+            color: white;
+            font-size: 36px;
+            transition: all 0.4s ease;
+            animation: heartBeat 1.5s infinite;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+
+        .heart-btn:hover .heart-icon,
+        .heart-btn2:hover .heart-icon {
+            transform: scale(1.3);
+            color: #fff8dc;
+        }
+
         .heart-text {
             position: absolute;
-            transform: rotate(-45deg);
-            color: white;
+            color: red;
             font-size: 14px;
             font-weight: bold;
             z-index: 1;
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-         /* 新增：爱心按钮样式 */
-        .heart-btn2 {
-            /* 固定在右下角 */
-            position: fixed;
-            bottom: 40px;
-            left: 40px;
-            /* 爱心形状 */
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            /* 核心：用border-radius制作爱心 */
-            border-radius: 50% 50% 0 50%;
-            transform: rotate(45deg);
-            cursor: pointer;
-            /* 视觉效果 */
-            box-shadow: 0 4px 15px rgba(255, 107, 139, 0.4);
-            transition: all 0.3s ease;
-            z-index: 900; /* 低于遮罩层，高于其他内容 */
-            /* 内部居中容器 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            top: -25px;
         }
 
-        /* 爱心内部装饰（小爱心） */
-        .heart-btn2::before {
-            content: '';
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            border-radius: 50%;
-            transform: translate(-30px, 0);
-        }
-
-        .heart-btn2::after {
-            content: '';
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            border-radius: 50%;
-            transform: translate(0, -30px);
-        }
-
-        /* 爱心悬浮效果 */
-        .heart-btn2:hover {
-            background-color: #ff4757;
-            transform: rotate(45deg) scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
-        }
-
-
-
-        /* 新增：音乐控制按钮样式（左上角） */
+        /* 音乐控制按钮样式 */
         .music-control {
             position: fixed;
             top: 40px;
@@ -302,71 +267,23 @@
             color: #ff6b8b;
         }
     </style>
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <!-- 照片墙容器 -->
     <div class="photo-wall">
-          <div class="photo-container" id="photoContainer">
-            <!-- 本地图片列表：请替换为你自己的图片路径和文件名 -->
-            <!-- 示例：假设你的图片放在和HTML文件同目录的images文件夹下 -->
-            <div class="photo-item"><img src="img/1.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/2.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/3.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/4.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/5.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/6.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/7.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/8.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/9.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/10.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/11.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/12.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/13.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/14.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/15.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/16.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/17.jpg" alt="照片1"></div>
-       <!--      <div class="photo-item"><img src="img/18.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/19.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/20.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/21.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/22.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/23.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/24.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/25.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/26.jpg" alt="照片1"></div> -->
-            <<!-- div class="photo-item"><img src="img/27.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/28.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/29.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/30.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/31.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/32.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/33.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/34.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/35.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/37.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/36.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/38.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/39.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/40.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/41.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/42.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/43.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/44.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/45.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/46.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/47.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/48.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/49.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/50.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/51.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/52.jpg" alt="照片2"></div> -->
+        <div class="photo-container" id="photoContainer">
+            <!-- 图片将通过JavaScript动态生成 -->
         </div>
     </div>
 
     <!-- 炫丽文字 -->
-     <div class="text-content">因为有你一路陪伴，我才能感受到爱的幸福。</div>
+    <div class="text-content">因为有你一路陪伴，我才能感受到爱的幸福。</div>
     <div class="text-content">希望未来一直有你，我想和你走到人生的终点。</div>
+    <div class="text-content">我会让你看到我的改变，成为值得你托付终生的人。</div>
+    <div class="text-content">我爱你，胡目熔！</div>
+    <div class="text-content">愿得一人心，白首不分离。</div>
 
     <!-- 图片放大遮罩层 -->
     <div class="modal" id="modal">
@@ -374,24 +291,24 @@
         <img id="modalImg" src="" alt="放大的照片">
     </div>
 
-    <!-- 大爱心按钮 -->
+    <!-- 爱心按钮 -->
     <div class="heart-btn" id="heartBtn">
         <span class="heart-text">下一页</span>
+        <i class="fa fa-heart heart-icon"></i>
     </div>
-     <!-- 大爱心按钮 -->
     <div class="heart-btn2" id="heartBtn2">
         <span class="heart-text">上一页</span>
+        <i class="fa fa-heart heart-icon"></i>
     </div>
 
-    <!-- 新增：音乐控制按钮 -->
+    <!-- 音乐控制按钮 -->
     <div class="music-control" id="musicControl">
         <span class="music-icon" id="musicIcon">♫</span>
     </div>
 
-    <!-- 新增：音频播放器（隐藏） -->
-    <audio id="backgroundMusic" loop>
-        <!-- 替换为你的MP3文件路径 -->
-        <source src="lovebgm.mp3" type="audio/ogg">
+    <!-- 音频播放器（优化自动播放配置） -->
+    <audio id="backgroundMusic" loop preload="auto" autoplay muted>
+        <source src="lovebgm.mp3" type="audio/mpeg">
         您的浏览器不支持音频播放
     </audio>
 
@@ -402,45 +319,110 @@
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modalImg');
         const closeBtn = document.getElementById('closeBtn');
-        const photoItems = document.querySelectorAll('.photo-item');
         const heartBtn = document.getElementById('heartBtn');
         const heartBtn2 = document.getElementById('heartBtn2');
-        // 新增：音乐相关元素
         const musicPlayer = document.getElementById('backgroundMusic');
         const musicControl = document.getElementById('musicControl');
         const musicIcon = document.getElementById('musicIcon');
 
+        // GitHub图片基础路径（请替换为实际路径）
+        const imageBaseUrl = "img/";
+        // 动态生成52张图片
+        const totalImages = 52;
+        const photoItems = [];
+        const preloadQueue = []; // 预加载队列
+        
+        // 计算可视区域内需要优先加载的图片数量
+        const visibleCount = Math.ceil(photoWall.clientWidth / 320) + 2; // 额外多加载2张
+
+        // 创建图片元素（初始不加载）
+        for (let i = 1; i <= totalImages; i++) {
+            const div = document.createElement('div');
+            div.className = 'photo-item';
+            
+            const img = document.createElement('img');
+            img.dataset.src = `${imageBaseUrl}${i}.jpg`; // 存储真实地址
+            img.alt = `照片${i}`;
+            img.loading = 'lazy'; // 懒加载
+            img.decoding = 'async'; // 异步解码
+            img.width = 300; // 预设尺寸
+            img.height = 320; // 预设尺寸
+            
+            div.appendChild(img);
+            photoContainer.appendChild(div);
+            photoItems.push(div);
+            preloadQueue.push(img); // 添加到预加载队列
+        }
+
         // 复制图片列表，实现无缝滚动
-        const originalItems = Array.from(photoItems);
+        const originalItems = [...photoItems];
         originalItems.forEach(item => {
             const clone = item.cloneNode(true);
             photoContainer.appendChild(clone);
         });
 
-        // 配置参数 - 慢速度滚动
+        // 配置参数 - 优化滚动性能
         const speed = 1; 
         let position = 0; 
         let timer = null; 
-        const originalWidth = originalItems.length * (300 + 20);
+        const itemWidth = 300 + 20; // 图片宽度+间距
+        const originalWidth = originalItems.length * itemWidth;
         let isModalOpen = false;
-        // 新增：音乐播放状态
         let isMusicPlaying = true;
+        let lastTime = 0;
+        let isScrolling = true; // 滚动状态标记
 
-        // 自动滚动函数
-        function autoScroll() {
-            if (isModalOpen) return;
+        // 图片加载函数
+        function loadImage(img) {
+            if (img.src !== img.dataset.src && img.dataset.src) {
+                img.src = img.dataset.src;
+                img.onload = () => {
+                    img.classList.add('loaded');
+                };
+                img.onerror = () => {
+                    console.error(`图片加载失败: ${img.dataset.src}`);
+                    // 失败重试机制
+                    setTimeout(() => loadImage(img), 3000);
+                };
+            }
+        }
+
+        // 预加载可视区域内的图片
+        function preloadVisibleImages() {
+            // 计算当前可见区域的起始索引
+            const visibleStart = Math.floor(Math.abs(position) / itemWidth);
+            // 预加载可见区域前后的图片
+            for (let i = visibleStart - 3; i < visibleStart + visibleCount + 3; i++) {
+                const idx = ((i % originalItems.length) + originalItems.length) % originalItems.length;
+                if (preloadQueue[idx]) {
+                    loadImage(preloadQueue[idx]);
+                }
+            }
+        }
+
+        // 优化的自动滚动函数 - 使用时间差控制滚动速度，避免卡顿
+        function autoScroll(timestamp) {
+            if (isModalOpen || !isScrolling) return;
             
-            if (timer) cancelAnimationFrame(timer);
-            timer = requestAnimationFrame(function move() {
-                if (isModalOpen) return;
-                
+            if (!lastTime) lastTime = timestamp;
+            const elapsed = timestamp - lastTime;
+            
+            // 控制滚动帧率，大约60fps
+            if (elapsed > 16) {
                 position -= speed;
                 if (Math.abs(position) >= originalWidth) {
                     position = 0;
                 }
                 photoContainer.style.transform = `translateX(${position}px)`;
-                timer = requestAnimationFrame(move);
-            });
+                lastTime = timestamp;
+                
+                // 每滚动一定距离检查并预加载图片
+                if (Math.abs(position) % (itemWidth * 2) < speed) {
+                    preloadVisibleImages();
+                }
+            }
+            
+            timer = requestAnimationFrame(autoScroll);
         }
 
         // 暂停滚动函数
@@ -448,28 +430,35 @@
             if (timer) {
                 cancelAnimationFrame(timer);
                 timer = null;
+                lastTime = 0;
             }
         }
 
-        // 启动初始滚动
-        autoScroll();
-
-        // 鼠标悬浮暂停
-        // photoWall.addEventListener('mouseenter', () => {
-        //     if (!isModalOpen) pauseScroll();
-        // });
-        // photoWall.addEventListener('mouseleave', () => {
-        //     if (!isModalOpen) autoScroll();
-        // });
+        // 启动初始滚动和预加载
+        preloadVisibleImages(); // 初始加载可见区域图片
+        timer = requestAnimationFrame(autoScroll);
 
         // 点击图片放大
         photoItems.forEach(item => {
             item.addEventListener('click', () => {
-                const imgSrc = item.querySelector('img').src;
-                modalImg.src = imgSrc;
-                modal.style.display = 'flex';
-                isModalOpen = true;
-                pauseScroll();
+                const img = item.querySelector('img');
+                // 确保大图加载完成
+                if (img.classList.contains('loaded')) {
+                    modalImg.src = img.src;
+                    modal.style.display = 'flex';
+                    isModalOpen = true;
+                    pauseScroll();
+                } else {
+                    // 显示加载状态
+                    modalImg.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTExIDRoMnYyaC0yek0xMiAydjJoMnYyaC0yek0xMiAxMkg5djJoM3YtMnpNMTIgMTZoLTJ2Mmgydi0yek0xMiAxOGgtMnYyaDJ2LTJ6bS02LTZoMnYyaC0yek02IDEySDh2LTIgMiAwVjEwaC0yek02IDE2aDJ2LTJoLTJ2MnoiLz48cGF0aCBkPSJNMjEgMTBoLTJ2LTRoMnY0em0wLThoLTJ2LTRoMnY0em0tNC00aC0ydi0yaDJ2MnptOC00aC0ydi0yaDJ2MnoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=';
+                    modal.style.display = 'flex';
+                    isModalOpen = true;
+                    pauseScroll();
+                    // 等待原图加载完成后替换
+                    img.onload = () => {
+                        modalImg.src = img.src;
+                    };
+                }
             });
         });
 
@@ -477,7 +466,7 @@
         function closeModal() {
             modal.style.display = 'none';
             isModalOpen = false;
-            autoScroll();
+            timer = requestAnimationFrame(autoScroll);
         }
 
         // 绑定关闭事件
@@ -492,7 +481,25 @@
         window.addEventListener('resize', () => {
             pauseScroll();
             position = 0;
-            if (!isModalOpen) autoScroll();
+            // 重新计算可视区域数量
+            visibleCount = Math.ceil(photoWall.clientWidth / 320) + 2;
+            if (!isModalOpen) {
+                preloadVisibleImages();
+                timer = requestAnimationFrame(autoScroll);
+            }
+        });
+
+        // 滚动性能优化：滚动时暂停非必要动画
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                isScrolling = false;
+                pauseScroll();
+            } else {
+                isScrolling = true;
+                if (!isModalOpen) {
+                    timer = requestAnimationFrame(autoScroll);
+                }
+            }
         });
 
         // 爱心按钮点击跳转逻辑
@@ -500,48 +507,68 @@
             const nextPageUrl = 'image2.html';
             window.location.href = nextPageUrl;
         });
-          // 爱心按钮点击跳转逻辑
+        
         heartBtn2.addEventListener('click', () => {
             const nextPageUrl = 'index.html';
             window.location.href = nextPageUrl;
         });
 
-
-        // ====================== 新增：音乐播放逻辑 ======================
-        // 尝试自动播放音乐（兼容浏览器策略：需用户交互后播放）
+        // 优化音乐自动播放逻辑
         function initMusic() {
-            // 监听页面点击事件，首次点击后自动播放
-            playMusic();
-            document.addEventListener('click', function playMusicOnClick() {
-                if (!isMusicPlaying) {
-                    playMusic();
-                    // 只执行一次，移除监听
-                    document.removeEventListener('click', playMusicOnClick);
+            // 方案1：页面加载完成后立即尝试播放
+            document.addEventListener('DOMContentLoaded', async () => {
+                try {
+                    // 先取消静音再播放（绕过浏览器限制）
+                    musicPlayer.muted = false;
+                    await musicPlayer.play();
+                    isMusicPlaying = true;
+                    musicIcon.textContent = '♪';
+                    musicIcon.style.color = '#ff4757';
+                    console.log('音乐自动播放成功');
+                } catch (error) {
+                    console.log('自动播放失败，等待用户交互:', error);
+                    // 方案2：监听任何用户交互后播放
+                    const playOnInteraction = () => {
+                        if (!isMusicPlaying) {
+                            musicPlayer.muted = false;
+                            musicPlayer.play().then(() => {
+                                isMusicPlaying = true;
+                                musicIcon.textContent = '♪';
+                                musicIcon.style.color = '#ff4757';
+                            }).catch(err => console.log('用户交互后播放失败:', err));
+                            // 移除所有监听，避免重复触发
+                            document.removeEventListener('click', playOnInteraction);
+                            document.removeEventListener('touchstart', playOnInteraction);
+                            document.removeEventListener('keydown', playOnInteraction);
+                        }
+                    };
+                    
+                    // 监听多种用户交互方式
+                    document.addEventListener('click', playOnInteraction);
+                    document.addEventListener('touchstart', playOnInteraction);
+                    document.addEventListener('keydown', playOnInteraction);
                 }
-            }, { once: true });
+            });
         }
 
-        // 播放音乐
         function playMusic() {
             try {
                 musicPlayer.play();
                 isMusicPlaying = true;
-                musicIcon.textContent = '♪'; // 播放图标
+                musicIcon.textContent = '♪';
                 musicIcon.style.color = '#ff4757';
             } catch (e) {
                 console.log('音乐播放失败:', e);
             }
         }
 
-        // 暂停音乐
         function pauseMusic() {
             musicPlayer.pause();
             isMusicPlaying = false;
-            musicIcon.textContent = '♫'; // 暂停图标
+            musicIcon.textContent = '♫';
             musicIcon.style.color = '#ff6b8b';
         }
 
-        // 音乐控制按钮点击事件
         musicControl.addEventListener('click', () => {
             if (isMusicPlaying) {
                 pauseMusic();

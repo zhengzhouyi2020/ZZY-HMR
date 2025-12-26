@@ -3,553 +3,436 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>郑周义♥胡目熔</title>
-    <meta name="language" content="zh-CN">
-    <meta name="title" content="郑周义">
-    <style>
-        /* 基础样式重置 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #f5f5f5;
-            font-family: "Microsoft Yahei", sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* 照片墙容器 - 固定在屏幕中央 */
-        .photo-wall {
-            width: 100%;
-            max-width: 1400px;
-            overflow: hidden;
-            position: relative;
-            height: 400px;
-            margin-bottom: 60px;
-            display: flex;
-            align-items: center;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-            background-color: #fff;
-            padding: 0 20px;
-        }
-
-        /* 滚动内容容器 */
-        .photo-container {
-            display: flex;
-            position: absolute;
-            left: 0;
-            height: 80%;
-        }
-
-        /* 图片样式 */
-        .photo-item {
-            width: 300px;
-            height: 100%;
-            margin-right: 20px;
-            cursor: pointer;
-            overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            flex-shrink: 0;
-            transition: transform 0.3s ease;
-        }
-
-        .photo-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .photo-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .photo-item:hover img {
-            transform: scale(1.08);
-        }
-
-        /* 图片放大遮罩层 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.85);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal img {
-            max-width: 85%;
-            max-height: 85%;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .close-btn:hover {
-            color: #ffd700;
-            transform: scale(1.1);
-        }
-
-        /* 炫丽文字样式 */
-        .text-content {
-            text-align: center;
-            font-size: 28px;
-            font-weight: 600;
-            line-height: 1.8;
-            letter-spacing: 3px;
-            background: linear-gradient(120deg, #e66465, #9198e5, #ff7eb3, #ffd700);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
-                         0 0 20px rgba(230, 100, 101, 0.5);
-            animation: gradientMove 8s ease infinite;
-            width: 100%;
-            max-width: 1400px;
-        }
-
-        @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
+    <title>暖心留言板 | 永久保存的美好瞬间</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <!-- 自定义配置Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5', // 主色调：温柔紫蓝
+                        secondary: '#EC4899', // 辅助色：浪漫粉紫
+                        neutral: {
+                            50: '#F9FAFB',
+                            100: '#F3F4F6',
+                            200: '#E5E7EB',
+                            700: '#374151',
+                            800: '#1F2937',
+                            900: '#111827',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 20px rgba(0, 0, 0, 0.08)',
+                        'card-hover': '0 8px 30px rgba(0, 0, 0, 0.12)',
+                    }
+                },
             }
-            50% {
-                background-position: 100% 50%;
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
             }
-            100% {
-                background-position: 0% 50%;
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .bg-gradient {
+                background: linear-gradient(135deg, #4F46E5 0%, #EC4899 100%);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
             }
         }
 
-        @supports (-webkit-text-stroke: 1px #fff) {
-            .text-content {
-                -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.5);
-            }
+        /* 自定义动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-         /* 新增：爱心按钮样式 */
-        .heart-btn {
-            /* 固定在右下角 */
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            /* 爱心形状 */
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            /* 核心：用border-radius制作爱心 */
-            border-radius: 50% 50% 0 50%;
-            transform: rotate(45deg);
-            cursor: pointer;
-            /* 视觉效果 */
-            box-shadow: 0 4px 15px rgba(255, 107, 139, 0.4);
-            transition: all 0.3s ease;
-            z-index: 900; /* 低于遮罩层，高于其他内容 */
-            /* 内部居中容器 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
         }
-
-        /* 爱心内部装饰（小爱心） */
-        .heart-btn::before {
-            content: '';
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            border-radius: 50%;
-            transform: translate(-30px, 0);
+        .message-card {
+            animation: fadeIn 0.3s ease forwards;
         }
-
-        .heart-btn::after {
-            content: '';
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            border-radius: 50%;
-            transform: translate(0, -30px);
+        .message-card:nth-child(odd) {
+            animation-delay: 0.1s;
         }
-
-        /* 爱心悬浮效果 */
-        .heart-btn:hover {
-            background-color: #ff4757;
-            transform: rotate(45deg) scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
-        }
-
-        /* 爱心按钮文字（可选） */
-        .heart-text {
-            position: absolute;
-            transform: rotate(-45deg);
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-            z-index: 1;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-         /* 新增：爱心按钮样式 */
-        .heart-btn2 {
-            /* 固定在右下角 */
-            position: fixed;
-            bottom: 40px;
-            left: 40px;
-            /* 爱心形状 */
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            /* 核心：用border-radius制作爱心 */
-            border-radius: 50% 50% 0 50%;
-            transform: rotate(45deg);
-            cursor: pointer;
-            /* 视觉效果 */
-            box-shadow: 0 4px 15px rgba(255, 107, 139, 0.4);
-            transition: all 0.3s ease;
-            z-index: 900; /* 低于遮罩层，高于其他内容 */
-            /* 内部居中容器 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* 爱心内部装饰（小爱心） */
-        .heart-btn2::before {
-            content: '';
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            border-radius: 50%;
-            transform: translate(-30px, 0);
-        }
-
-        .heart-btn2::after {
-            content: '';
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background-color: #ff6b8b;
-            border-radius: 50%;
-            transform: translate(0, -30px);
-        }
-
-        /* 爱心悬浮效果 */
-        .heart-btn2:hover {
-            background-color: #ff4757;
-            transform: rotate(45deg) scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.6);
-        }
-
-
-
-        /* 新增：音乐控制按钮样式（左上角） */
-        .music-control {
-            position: fixed;
-            top: 40px;
-            left: 40px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 800;
-            transition: all 0.3s ease;
-        }
-
-        .music-control:hover {
-            transform: scale(1.1);
-            background-color: #fff;
-        }
-
-        .music-icon {
-            font-size: 24px;
-            color: #ff6b8b;
+        .message-card:nth-child(even) {
+            animation-delay: 0.2s;
         }
     </style>
 </head>
-<body>
-    <!-- 照片墙容器 -->
-    <div class="photo-wall">
-          <div class="photo-container" id="photoContainer">
-            <!-- 本地图片列表：请替换为你自己的图片路径和文件名 -->
-            <!-- 示例：假设你的图片放在和HTML文件同目录的images文件夹下 -->
-    <!--         <div class="photo-item"><img src="img/1.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/2.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/3.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/4.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/5.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/6.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/7.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/8.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/9.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/10.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/11.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/12.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/13.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/14.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/15.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/16.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/17.jpg" alt="照片1"></div> -->
-            <div class="photo-item"><img src="img/18.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/19.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/20.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/21.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/22.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/23.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/24.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/25.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/26.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/27.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/28.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/29.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/30.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/31.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/32.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/33.jpg" alt="照片3"></div>
-      <!--       <div class="photo-item"><img src="img/34.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/35.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/37.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/36.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/38.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/39.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/40.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/41.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/42.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/43.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/44.jpg" alt="照片4"></div>
-            <div class="photo-item"><img src="img/45.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/46.jpg" alt="照片5"></div>
-            <div class="photo-item"><img src="img/47.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/48.jpg" alt="照片2"></div>
-            <div class="photo-item"><img src="img/49.jpg" alt="照片3"></div>
-            <div class="photo-item"><img src="img/50.jpg" alt="照片4"></div> -->
-      <!--       <div class="photo-item"><img src="img/51.jpg" alt="照片1"></div>
-            <div class="photo-item"><img src="img/52.jpg" alt="照片2"></div> -->
+<body class="bg-neutral-50 min-h-screen font-sans text-neutral-800">
+    <!-- 页面头部 - 渐变背景+毛玻璃效果 -->
+    <header class="bg-gradient text-white py-8 shadow-lg relative overflow-hidden">
+        <!-- 装饰元素 -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10">
+            <div class="absolute top-10 left-10 w-40 h-40 rounded-full bg-white"></div>
+            <div class="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-white"></div>
         </div>
-    </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col items-center text-center">
+                <i class="fa fa-heart text-4xl mb-4 text-white/90"></i>
+                <h1 class="text-[clamp(1.8rem,5vw,2.8rem)] font-bold text-shadow mb-2">暖心留言板</h1>
+                <p class="text-white/90 max-w-md">每一条留言，都是时光的印记，永久保存在GitHub</p>
+            </div>
+        </div>
+    </header>
 
-    <!-- 炫丽文字 -->
-    <div class="text-content">我会让你看到我的改变，成为值得你托付终生的人。</div>
-    <!-- <div class="text-content">我爱你，胡目熔！</div> -->
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+        <!-- 留言输入表单 - 卡片式设计+悬浮阴影 -->
+        <section class="bg-white rounded-xl shadow-card p-6 mb-10 transform hover:shadow-card-hover transition-all-300">
+            <h2 class="text-xl font-semibold mb-6 text-neutral-800 flex items-center gap-2">
+                <i class="fa fa-pencil-square-o text-primary"></i> 写下你的留言
+            </h2>
+            
+            <form id="messageForm" class="space-y-5">
+                <div>
+                    <label for="author" class="block text-sm font-medium text-neutral-700 mb-2">你的昵称</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-neutral-500">
+                            <i class="fa fa-user"></i>
+                        </span>
+                        <input type="text" id="author" name="author" required
+                            class="w-full pl-10 pr-3 py-3 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300 bg-neutral-50"
+                            placeholder="请输入你的昵称（如：小幸运）">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="content" class="block text-sm font-medium text-neutral-700 mb-2">留言内容</label>
+                    <div class="relative">
+                        <span class="absolute top-3 left-3 text-neutral-500">
+                            <i class="fa fa-comment"></i>
+                        </span>
+                        <textarea id="content" name="content" rows="5" required
+                            class="w-full pl-10 pr-3 py-3 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300 bg-neutral-50 resize-none"
+                            placeholder="分享你的心情、故事或想说的话..."></textarea>
+                        <div class="absolute right-3 bottom-3 text-xs text-neutral-500">
+                            <span id="charCount">0</span>/500
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" id="submitBtn"
+                    class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-all-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg">
+                    <i class="fa fa-paper-plane"></i> 提交留言
+                </button>
+            </form>
+            
+            <p id="submitStatus" class="mt-4 text-sm hidden animate-fade-in"></p>
+        </section>
 
-    <!-- 图片放大遮罩层 -->
-    <div class="modal" id="modal">
-        <span class="close-btn" id="closeBtn">&times;</span>
-        <img id="modalImg" src="" alt="放大的照片">
-    </div>
+        <!-- 留言列表 -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-semibold text-neutral-800 flex items-center gap-2">
+                    <i class="fa fa-comments text-primary"></i> 所有留言
+                </h2>
+                <span id="messageCount" class="text-sm text-neutral-500">0 条留言</span>
+            </div>
+            
+            <!-- 加载状态 -->
+            <div id="loadingMessages" class="text-center py-12">
+                <div class="inline-block w-8 h-8 border-4 border-neutral-200 border-t-primary rounded-full animate-spin mb-4"></div>
+                <p class="text-neutral-500">加载留言中...</p>
+            </div>
+            
+            <!-- 空状态 -->
+            <div id="emptyMessage" class="text-center py-16 hidden">
+                <div class="mb-4 text-neutral-300">
+                    <i class="fa fa-inbox text-6xl"></i>
+                </div>
+                <p class="text-neutral-500 mb-2">暂无留言</p>
+                <p class="text-sm text-neutral-400">快来发布第一条暖心留言吧 ✨</p>
+            </div>
+            
+            <!-- 留言列表容器 -->
+            <div id="messageList" class="space-y-5 hidden"></div>
+        </section>
+    </main>
 
-    <!-- 大爱心按钮 -->
-    <div class="heart-btn" id="heartBtn">
-        <span class="heart-text">下一页</span>
-    </div>
-     <!-- 大爱心按钮 -->
-    <div class="heart-btn2" id="heartBtn2">
-        <span class="heart-text">上一页</span>
-    </div>
-
-    <!-- 新增：音乐控制按钮 -->
-    <div class="music-control" id="musicControl">
-        <span class="music-icon" id="musicIcon">♫</span>
-    </div>
-
-    <!-- 新增：音频播放器（隐藏） -->
-    <audio id="backgroundMusic" loop>
-        <!-- 替换为你的MP3文件路径 -->
-        <source src="lovebgm.mp3" type="audio/ogg">
-        您的浏览器不支持音频播放
-    </audio>
+    <!-- 页脚 -->
+    <footer class="bg-neutral-800 text-white py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center text-sm text-neutral-400">
+            <p>💖 留言永久保存于 GitHub | 暖心陪伴，不负时光 💖</p>
+            <p class="mt-2">© 2025 暖心留言板 | 所有留言均为用户自愿发布</p>
+        </div>
+    </footer>
 
     <script>
-        // 获取DOM元素
-        const photoWall = document.querySelector('.photo-wall');
-        const photoContainer = document.getElementById('photoContainer');
-        const modal = document.getElementById('modal');
-        const modalImg = document.getElementById('modalImg');
-        const closeBtn = document.getElementById('closeBtn');
-        const photoItems = document.querySelectorAll('.photo-item');
-        const heartBtn = document.getElementById('heartBtn');
-        const heartBtn2 = document.getElementById('heartBtn2');
-        // 新增：音乐相关元素
-        const musicPlayer = document.getElementById('backgroundMusic');
-        const musicControl = document.getElementById('musicControl');
-        const musicIcon = document.getElementById('musicIcon');
+        // ========== 核心配置（请替换为你的信息） ==========
+        const CONFIG = {
+            // GitHub仓库信息（必填）
+            owner: "zhengzhouyi2020", // 如：octocat
+            repo: "ZZY-HMR", // 如：message-board
+            path: "comments", // 存储留言的文件路径
+            // GitHub Personal Access Token（必填，需有repo权限）
+            token: "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",
+            // 可选：API基础路径
+            apiBaseUrl: "https://api.github.com"
+        };
 
-        // 复制图片列表，实现无缝滚动
-        const originalItems = Array.from(photoItems);
-        originalItems.forEach(item => {
-            const clone = item.cloneNode(true);
-            photoContainer.appendChild(clone);
-        });
+        // ========== 工具函数 ==========
+        // 格式化时间
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString("zh-CN", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        }
 
-        // 配置参数 - 慢速度滚动
-        const speed = 1; 
-        let position = 0; 
-        let timer = null; 
-        const originalWidth = originalItems.length * (300 + 20);
-        let isModalOpen = false;
-        // 新增：音乐播放状态
-        let isMusicPlaying = true;
-
-        // 自动滚动函数
-        function autoScroll() {
-            if (isModalOpen) return;
+        // 显示提交状态
+        function showSubmitStatus(text, isError = false) {
+            const statusEl = document.getElementById("submitStatus");
+            statusEl.textContent = text;
+            statusEl.className = `mt-4 text-sm animate-fade-in ${isError ? "text-red-500" : "text-green-500"}`;
+            statusEl.classList.remove("hidden");
             
-            if (timer) cancelAnimationFrame(timer);
-            timer = requestAnimationFrame(function move() {
-                if (isModalOpen) return;
-                
-                position -= speed;
-                if (Math.abs(position) >= originalWidth) {
-                    position = 0;
-                }
-                photoContainer.style.transform = `translateX(${position}px)`;
-                timer = requestAnimationFrame(move);
-            });
+            // 3秒后隐藏
+            setTimeout(() => {
+                statusEl.classList.add("hidden");
+            }, 3000);
         }
 
-        // 暂停滚动函数
-        function pauseScroll() {
-            if (timer) {
-                cancelAnimationFrame(timer);
-                timer = null;
-            }
-        }
-
-        // 启动初始滚动
-        autoScroll();
-
-        // 鼠标悬浮暂停
-        // photoWall.addEventListener('mouseenter', () => {
-        //     if (!isModalOpen) pauseScroll();
-        // });
-        // photoWall.addEventListener('mouseleave', () => {
-        //     if (!isModalOpen) autoScroll();
-        // });
-
-        // 点击图片放大
-        photoItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const imgSrc = item.querySelector('img').src;
-                modalImg.src = imgSrc;
-                modal.style.display = 'flex';
-                isModalOpen = true;
-                pauseScroll();
-            });
-        });
-
-        // 关闭放大层
-        function closeModal() {
-            modal.style.display = 'none';
-            isModalOpen = false;
-            autoScroll();
-        }
-
-        // 绑定关闭事件
-        closeBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', closeModal);
-        modalImg.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeModal();
-        });
-
-        // 窗口大小变化适配
-        window.addEventListener('resize', () => {
-            pauseScroll();
-            position = 0;
-            if (!isModalOpen) autoScroll();
-        });
-
-        // // 爱心按钮点击跳转逻辑
-        heartBtn.addEventListener('click', () => {
-            const nextPageUrl = 'image3.html';
-            window.location.href = nextPageUrl;
-        });
-          // 爱心按钮点击跳转逻辑
-        heartBtn2.addEventListener('click', () => {
-            const nextPageUrl = 'image.html';
-            window.location.href = nextPageUrl;
-        });
-
-
-        // ====================== 新增：音乐播放逻辑 ======================
-        // 尝试自动播放音乐（兼容浏览器策略：需用户交互后播放）
-        function initMusic() {
-            // 监听页面点击事件，首次点击后自动播放
-            playMusic();
-            document.addEventListener('click', function playMusicOnClick() {
-                if (!isMusicPlaying) {
-                    playMusic();
-                    // 只执行一次，移除监听
-                    document.removeEventListener('click', playMusicOnClick);
-                }
-            }, { once: true });
-        }
-
-        // 播放音乐
-        function playMusic() {
-            try {
-                musicPlayer.play();
-                isMusicPlaying = true;
-                musicIcon.textContent = '♪'; // 播放图标
-                musicIcon.style.color = '#ff4757';
-            } catch (e) {
-                console.log('音乐播放失败:', e);
-            }
-        }
-
-        // 暂停音乐
-        function pauseMusic() {
-            musicPlayer.pause();
-            isMusicPlaying = false;
-            musicIcon.textContent = '♫'; // 暂停图标
-            musicIcon.style.color = '#ff6b8b';
-        }
-
-        // 音乐控制按钮点击事件
-        musicControl.addEventListener('click', () => {
-            if (isMusicPlaying) {
-                pauseMusic();
+        // 字符计数
+        function updateCharCount() {
+            const content = document.getElementById("content").value;
+            const charCount = document.getElementById("charCount");
+            charCount.textContent = content.length;
+            
+            // 超过500字符标红
+            if (content.length > 500) {
+                charCount.classList.add("text-red-500");
+                document.getElementById("content").value = content.substring(0, 500);
+                charCount.textContent = 500;
             } else {
-                playMusic();
+                charCount.classList.remove("text-red-500");
             }
-        });
+        }
 
-        // 初始化音乐
-        initMusic();
+        // ========== GitHub API 交互 ==========
+        // 1. 获取文件的SHA（用于更新文件）
+        async function getFileSha() {
+            try {
+                const response = await fetch(
+                    `${CONFIG.apiBaseUrl}/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`,
+                    {
+                        headers: {
+                            Authorization: `token ${CONFIG.token}`,
+                            Accept: "application/vnd.github.v3+json"
+                        }
+                    }
+                );
+                if (response.status === 404) return null; // 文件不存在
+                if (!response.ok) throw new Error("获取文件信息失败");
+                const data = await response.json();
+                return data.sha;
+            } catch (error) {
+                console.error("获取SHA失败：", error);
+                return null;
+            }
+        }
+
+        // 2. 获取所有留言
+        async function fetchMessages() {
+            const loadingEl = document.getElementById("loadingMessages");
+            const listEl = document.getElementById("messageList");
+            const emptyEl = document.getElementById("emptyMessage");
+            const countEl = document.getElementById("messageCount");
+
+            try {
+                const response = await fetch(
+                    `${CONFIG.apiBaseUrl}/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`,
+                    {
+                        headers: {
+                            Accept: "application/vnd.github.v3+json"
+                        }
+                    }
+                );
+
+                // 处理文件不存在的情况
+                if (response.status === 404) {
+                    loadingEl.classList.add("hidden");
+                    emptyEl.classList.remove("hidden");
+                    countEl.textContent = "0 条留言";
+                    return [];
+                }
+
+                if (!response.ok) throw new Error("加载留言失败");
+
+                const data = await response.json();
+                // 解码base64内容
+                const content = atob(data.content.replace(/\n/g, ""));
+                const messages = JSON.parse(content || "[]");
+
+                // 更新计数
+                countEl.textContent = `${messages.length} 条留言`;
+
+                // 渲染列表
+                loadingEl.classList.add("hidden");
+                if (messages.length === 0) {
+                    emptyEl.classList.remove("hidden");
+                } else {
+                    listEl.classList.remove("hidden");
+                    // 按时间倒序排列
+                    messages.sort((a, b) => b.timestamp - a.timestamp);
+                    // 生成HTML
+                    listEl.innerHTML = messages.map((msg, index) => `
+                        <div class="message-card bg-white rounded-xl shadow-card p-5 transform hover:shadow-card-hover transition-all-300">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium">
+                                        ${msg.author.charAt(0)}
+                                    </div>
+                                    <span class="font-medium text-neutral-800">${msg.author}</span>
+                                </div>
+                                <span class="text-xs text-neutral-500">${formatTime(msg.timestamp)}</span>
+                            </div>
+                            <p class="text-neutral-700 leading-relaxed whitespace-pre-line">${msg.content}</p>
+                            <div class="mt-4 pt-3 border-t border-neutral-100 flex justify-end">
+                                <span class="text-xs text-neutral-400">#${messages.length - index}</span>
+                            </div>
+                        </div>
+                    `).join("");
+                }
+
+                return messages;
+            } catch (error) {
+                console.error("加载留言失败：", error);
+                loadingEl.innerHTML = `
+                    <div class="text-red-500 mb-2"><i class="fa fa-exclamation-circle"></i></div>
+                    <p class="text-red-500">加载失败：${error.message}</p>
+                    <button onclick="fetchMessages()" class="mt-4 text-primary text-sm underline">重试</button>
+                `;
+                return [];
+            }
+        }
+
+        // 3. 提交新留言
+        async function submitMessage(author, content) {
+            const submitBtn = document.getElementById("submitBtn");
+            // 禁用按钮防止重复提交
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> 提交中...';
+
+            try {
+                // 1. 获取现有留言
+                const existingMessages = await fetchMessages();
+                // 2. 构造新留言
+                const newMessage = {
+                    author,
+                    content,
+                    timestamp: Date.now()
+                };
+                const allMessages = [...existingMessages, newMessage];
+                // 3. 获取文件SHA（更新需要）
+                const sha = await getFileSha();
+                // 4. 准备提交数据
+                const payload = {
+                    message: `新增留言：${author} - ${new Date().toLocaleString()}`,
+                    content: btoa(JSON.stringify(allMessages, null, 2)),
+                    branch: "main"
+                };
+                // 如果文件已存在，需要传入sha
+                if (sha) payload.sha = sha;
+
+                // 5. 调用GitHub API提交
+                const response = await fetch(
+                    `${CONFIG.apiBaseUrl}/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.path}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            Authorization: `token ${CONFIG.token}`,
+                            Accept: "application/vnd.github.v3+json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(payload)
+                    }
+                );
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.message || "提交失败");
+                }
+
+                showSubmitStatus("留言提交成功！✨", false);
+                // 重新加载留言列表
+                setTimeout(() => fetchMessages(), 800);
+                // 重置表单
+                document.getElementById("messageForm").reset();
+                updateCharCount();
+
+            } catch (error) {
+                console.error("提交失败：", error);
+                showSubmitStatus(`提交失败：${error.message}`, true);
+            } finally {
+                // 恢复按钮
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa fa-paper-plane"></i> 提交留言';
+            }
+        }
+
+        // ========== 页面初始化 ==========
+        document.addEventListener("DOMContentLoaded", () => {
+            // 加载现有留言
+            fetchMessages();
+
+            // 字符计数监听
+            document.getElementById("content").addEventListener("input", updateCharCount);
+            
+            // 初始化字符计数
+            updateCharCount();
+
+            // 绑定表单提交事件
+            document.getElementById("messageForm").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const author = document.getElementById("author").value.trim();
+                const content = document.getElementById("content").value.trim();
+
+                if (!author) {
+                    showSubmitStatus("请输入你的昵称！", true);
+                    return;
+                }
+                
+                if (!content) {
+                    showSubmitStatus("请输入留言内容！", true);
+                    return;
+                }
+                
+                if (content.length > 500) {
+                    showSubmitStatus("留言内容不能超过500个字符！", true);
+                    return;
+                }
+
+                submitMessage(author, content);
+            });
+
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
     </script>
 </body>
 </html>
